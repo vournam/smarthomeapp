@@ -6,7 +6,6 @@ import Modal from "react-modal";
 const ProgramEcoSymbol = (props) => {
 
   const options = ['Πρόγραμμα 1', 'Πρόγραμμα 2', 'Πρόγραμμα 3', 'Πρόγραμμα 4', 'Πρόγραμμα 5'];
-  const img = ['', 'https://drive.google.com/uc?id=1oaSYslvUd_TSbv9I6OJgH_Vl8NmWzX-6', '', '', ''];
   const varProp = props.variable;
   const formValues = props.formValues;
   const setFormValues = props.setFormValues;
@@ -79,7 +78,6 @@ const ProgramEcoSymbol = (props) => {
         {options.map((option, index) => (
           <div className={`eco-program-selection${index}`} key={option}>  
             <div className="container program-container"> 
-              <img className={`eco-program-selection-icon${index}`} alt="" src={img[index]} />
               <label className="eco-program-selection-label" htmlFor={`${varProp}`}> 
                 {option}
                 <div className="info">{props.info[index]} </div>

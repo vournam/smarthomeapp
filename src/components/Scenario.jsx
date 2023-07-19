@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import Form1 from "./Form1";
 import Form2 from "./Form2";
 import Form3 from "./Form3";
+import ThankYou from "./ThankYou";
+import Instructions from "./Instructions";
 
 const Scenario = (props) => {
 
@@ -21,7 +23,7 @@ const Scenario = (props) => {
   const Page14 = props.page14;
   const Page15 = props.page15;
   const Page16 = props.page16;
-  const scenario = props.scenario;
+  // const scenario = props.scenario;
   const formValues = props.formValues;
   const setFormValues = props.setFormValues;
   // console.log('formValues-Scenario', formValues);
@@ -32,11 +34,16 @@ const Scenario = (props) => {
   const nextStep = (values) => {
     setFormValues({ ...formValues, ...values });
     setStep(step + 1);
-    if (step === 19) {
+    console.log('step:', step);
+    window.scrollTo(0, 0) // Scroll to the top of the other pages when the component mounts
+    if (step === 20) {
       props.store();
-      setStep(1);
     }
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to the top of the first-page when the component mounts
+  }, []);
 
   switch (step) {
     case 1:
@@ -44,7 +51,6 @@ const Scenario = (props) => {
       <Form1
         nextStep={nextStep}
         formValues={formValues}
-        setFormValues={setFormValues}
       />
     );
     case 2:
@@ -64,6 +70,13 @@ const Scenario = (props) => {
       />
     );
     case 4:
+    return (
+      <Instructions
+        nextStep={nextStep}
+        formValues={formValues}
+      />
+    );
+    case 5:
       return (
         <Page1
           nextStep={nextStep}
@@ -71,7 +84,7 @@ const Scenario = (props) => {
           setFormValues={setFormValues}
         />
       );
-    case 5:
+    case 6:
       return (
         <Page2
           nextStep={nextStep}
@@ -79,7 +92,7 @@ const Scenario = (props) => {
           setFormValues={setFormValues}
         />
       );
-    case 6:
+    case 7:
       return (
         <Page3
           nextStep={nextStep}
@@ -87,7 +100,7 @@ const Scenario = (props) => {
           setFormValues={setFormValues}
         />
       );
-    case 7:
+    case 8:
       return (
         <Page4
           nextStep={nextStep}
@@ -95,7 +108,7 @@ const Scenario = (props) => {
           setFormValues={setFormValues}
         />
       );
-    case 8:
+    case 9:
       return (
         <Page5
           nextStep={nextStep}
@@ -103,7 +116,7 @@ const Scenario = (props) => {
           setFormValues={setFormValues}
         />
       );
-    case 9:
+    case 10:
       return (
         <Page6
           nextStep={nextStep}
@@ -111,7 +124,7 @@ const Scenario = (props) => {
           setFormValues={setFormValues}
         />
       );
-    case 10:
+    case 11:
       return (
         <Page7
           nextStep={nextStep}
@@ -119,7 +132,7 @@ const Scenario = (props) => {
           setFormValues={setFormValues}
         />
       );
-    case 11:
+    case 12:
       return (
         <Page8
           nextStep={nextStep}
@@ -127,7 +140,7 @@ const Scenario = (props) => {
           setFormValues={setFormValues}
         />
       );
-    case 12:
+    case 13:
       return (
         <Page9
           nextStep={nextStep}
@@ -135,7 +148,7 @@ const Scenario = (props) => {
           setFormValues={setFormValues}
         />
       );
-    case 13:
+    case 14:
       return (
         <Page10
           nextStep={nextStep}
@@ -143,7 +156,7 @@ const Scenario = (props) => {
           setFormValues={setFormValues}
         />
       );
-    case 14:
+    case 15:
       return (
         <Page11
           nextStep={nextStep}
@@ -151,7 +164,7 @@ const Scenario = (props) => {
           setFormValues={setFormValues}
         />
       );
-    case 15:
+    case 16:
       return (
         <Page12
           nextStep={nextStep}
@@ -159,7 +172,7 @@ const Scenario = (props) => {
           setFormValues={setFormValues}
         />
       );
-    case 16:
+    case 17:
       return (
         <Page13
           nextStep={nextStep}
@@ -167,7 +180,7 @@ const Scenario = (props) => {
           setFormValues={setFormValues}
         />
       );
-    case 17:
+    case 18:
       return (
         <Page14
           nextStep={nextStep}
@@ -175,7 +188,7 @@ const Scenario = (props) => {
           setFormValues={setFormValues}
         />
       );
-    case 18:
+    case 19:
       return (
         <Page15
           nextStep={nextStep}
@@ -183,7 +196,7 @@ const Scenario = (props) => {
           setFormValues={setFormValues}
         />
       );
-    case 19:
+    case 20:
       return (
         <Page16
           nextStep={nextStep}
@@ -193,7 +206,7 @@ const Scenario = (props) => {
       );
     default:
     return (
-      <Form1
+      <ThankYou
       nextStep={nextStep}
       formValues={formValues}
       setFormValues={setFormValues}

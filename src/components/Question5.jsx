@@ -1,7 +1,7 @@
 import React from 'react';
 import "./style.css";
 
-const Question8 = (props) => {
+const Question = (props) => {
 
     const legend = props.legend;
     const opt1 = props.opt1;
@@ -9,9 +9,6 @@ const Question8 = (props) => {
     const opt3 = props.opt3;
     const opt4 = props.opt4;
     const opt5 = props.opt5;
-    const opt6 = props.opt6;
-    const opt7 = props.opt7;
-    const opt8 = props.opt8;
     const selectedOption = props.selectedOption;
     const handleOptionChange = props.handleOptionChange;
 
@@ -67,39 +64,9 @@ const Question8 = (props) => {
                 />
                 {opt5}
             </label>
-            <br />
-            <label>
-                <input
-                type="radio"
-                value={`${opt6}`}
-                checked={selectedOption === `${opt6}`}
-                onChange={handleOptionChange}
-                />
-                {opt6}
-            </label>
-            <br />
-            <label>
-                <input
-                type="radio"
-                value={`${opt7}`}
-                checked={selectedOption === `${opt7}`}
-                onChange={handleOptionChange}
-                />
-                {opt7}
-            </label>
-            <br />
-            <label>
-                <input
-                type="radio"
-                value={`${opt8}`}
-                checked={selectedOption === `${opt8}`}
-                onChange={handleOptionChange}
-                />
-                {opt8}
-            </label>
         </fieldset>
     );
 
 }
 
-export default Question8;
+export default Question;

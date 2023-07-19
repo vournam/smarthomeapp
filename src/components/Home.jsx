@@ -23,15 +23,15 @@ const Home = (props) => {
 
         <h1 className="option-title">ΠΡΟΓΡΑΜΜΑΤΑ</h1>
 
-        <Link to="/form" onClick={onOption1Click}>
-          <div className="option">
+        <Link to="/form" onClick={onOption1Click} className="option">
+          {/* <div > */}
             <div className="option-text option-1">Επιλέξτε πρόγραμμα</div>
             <img
               className="select-icon"
               alt=""
               src="https://drive.google.com/uc?id=1IrHaT-DlIIOs2bR3Owuj2fvQEjWH7JPT"
             />
-          </div>
+          {/* </div> */}
         </Link>
 
         <div className="option">

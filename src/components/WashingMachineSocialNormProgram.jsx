@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import ProgramSocialNorm from "./ProgramSocialNorm";
 
 const WashingMachineSocialNormProgram = (props) => {

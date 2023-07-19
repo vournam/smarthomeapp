@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useRef, useEffect} from "react";
 import { Button } from "react-bootstrap";
 import "./style.css";
 import Modal from "react-modal";
@@ -8,6 +8,7 @@ const Type = (props) => {
   const formValues = props.formValues;
   const setFormValues = props.setFormValues;
   const [showPopup, setShowPopup] = useState(false);
+  const scrollRef = useRef(null);
 
   const handleChange = (event) => {
     let newDishwasherDishType = formValues.DishwasherDishType;
@@ -21,6 +22,18 @@ const Type = (props) => {
       DishwasherDishType: newDishwasherDishType
     });
   };
+
+  const scrollToTop = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo(0, 0);
+    }
+  };
+
+  useEffect(() => {
+    if (showPopup) {
+      scrollToTop();
+    }
+  }, [showPopup]);
 
   const handleSubmit = (event) => {
     if (formValues.DishwasherDishType.length === 0) {
@@ -41,7 +54,7 @@ const Type = (props) => {
   );
 
   return (
-      <div className="background">
+      <div className="background" ref={scrollRef}>
         <div className="header">Επιλογή προγράμματος</div>
         <div className="stages">
           {stagesClasses.map((className, index) => (
@@ -77,10 +90,7 @@ const Type = (props) => {
         contentLabel="Terms Popup"
         overlayClassName="modal-overlay"
         className="modal-content"
-      >
-        <h4 className="modal-h4">Παρακαλώ επιλέξτε μία επιλογή για να συνεχίσετε.</h4>
-      </Modal>
-
+      >Παρακαλώ, πραγματοποιήστε τουλάχιστον μία επιλογή για να συνεχίσετε.</Modal>
     </div>
   );
 };

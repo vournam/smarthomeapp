@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useRef, useEffect} from "react";
 import { Button } from "react-bootstrap";
 import "./style.css";
 import Modal from "react-modal";
@@ -11,6 +11,7 @@ const ProgramEcoSymbol = (props) => {
   const formValues = props.formValues;
   const setFormValues = props.setFormValues;
   const [showPopup, setShowPopup] = useState(false);
+  const scrollRef = useRef(null);
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -21,6 +22,18 @@ const ProgramEcoSymbol = (props) => {
       [name]: value // Use computed property name to set the value based on the event target's name
     });
   };
+
+  const scrollToTop = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo(0, 0);
+    }
+  };
+
+  useEffect(() => {
+    if (showPopup) {
+      scrollToTop();
+    }
+  }, [showPopup]);
 
   const handleSubmit = (event) => {
     for (const property in formValues) {
@@ -52,7 +65,7 @@ const ProgramEcoSymbol = (props) => {
   );
   
   return (
-    <div className="background">
+    <div className="background" ref={scrollRef}>
       <div className="header">Επιλογή προγράμματος</div>
       <div className="stages">
         {stagesClasses.map((className, index) => (
@@ -67,7 +80,7 @@ const ProgramEcoSymbol = (props) => {
       <form className="options" method="get" name={`${varProp}`} onSubmit={handleSubmit}>
         {options.map((option, index) => (
           <div className={`eco-program-selection${index}`} key={option}>  
-            <div className="container"> 
+            <div className="container program-container"> 
               <label className="eco-program-selection-label" htmlFor={`${varProp}`} > 
                 {option}
                 <div className="info">{props.info[index]} </div>
@@ -94,9 +107,7 @@ const ProgramEcoSymbol = (props) => {
         contentLabel="Terms Popup"
         overlayClassName="modal-overlay"
         className="modal-content"
-      >
-        <h4 className="modal-h4">Παρακαλώ επιλέξτε μία επιλογή για να συνεχίσετε.</h4>
-      </Modal>
+      >Παρακαλώ επιλέξτε ένα πρόγραμμα για να συνεχίσετε.</Modal>
 
     </div>
   );

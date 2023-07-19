@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useRef, useEffect} from "react";
 import { Button } from "react-bootstrap";
 import "./style.css";
 import Modal from "react-modal";
@@ -9,6 +9,7 @@ const DirtLevel = (props) => {
   const formValues = props.formValues;
   const setFormValues = props.setFormValues;
   const [showPopup, setShowPopup] = useState(false);
+  const scrollRef = useRef(null);
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -18,6 +19,18 @@ const DirtLevel = (props) => {
       [name]: value // Use computed property name to set the value based on the event target's name
     });
   };
+
+  const scrollToTop = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo(0, 0);
+    }
+  };
+
+  useEffect(() => {
+    if (showPopup) {
+      scrollToTop();
+    }
+  }, [showPopup]);
 
   const handleSubmit = (event) => {
     for (const property in formValues) {
@@ -49,7 +62,7 @@ const DirtLevel = (props) => {
   );
 
   return (
-    <div className="background">
+    <div className="background" ref={scrollRef}>
       <div className="header">Επιλογή προγράμματος</div>
       <div className="stages">
         {stagesClasses.map((className, index) => (
@@ -85,10 +98,7 @@ const DirtLevel = (props) => {
         contentLabel="Terms Popup"
         overlayClassName="modal-overlay"
         className="modal-content"
-      >
-        <h4 className="modal-h4">Παρακαλώ επιλέξτε μία επιλογή για να συνεχίσετε.</h4>
-      </Modal>
-
+      >Παρακαλώ, πραγματοποιήστε μία επιλογή για να συνεχίσετε</Modal>
     </div>
   );
 };

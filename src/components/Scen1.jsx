@@ -11,7 +11,7 @@ import WashingMachineSocialNormProgram from './WashingMachineSocialNormProgram';
 import OvenHome from "./OvenHome";
 import OvenFoodType from './OvenFoodType';
 import OvenLevel from './OvenLevel';
-import OvenProgram from './OvenProgram';
+import OvenProgramNoNudge from './OvenProgramNoNudge';
 import Progress from "./Progress";
 import Scenario from "./Scenario";
 
@@ -31,7 +31,7 @@ const Scen1 = (props) => {
     const page12 = OvenHome;
     const page13 = OvenFoodType;
     const page14 = OvenLevel;
-    const page15 = OvenProgram;
+    const page15 = OvenProgramNoNudge;
     const page16 = Progress;
     const scenario = 1;
     const formValues = props.formValues;

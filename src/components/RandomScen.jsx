@@ -8,15 +8,21 @@ import Scen6 from "./Scen6";
 import Scen7 from "./Scen7";
 import Scen8 from "./Scen8";
 import Scen9 from "./Scen9";
+import ThankYou from "./ThankYou";
 import axios from "axios";
 import {db} from "../firebase";
-import { doc, setDoc, updateDoc, collection, query, where, getDocs  } from "firebase/firestore"; 
+import { doc, setDoc, collection, query, where, getDocs  } from "firebase/firestore"; 
+// import ExportToExcel from "./ExportToExcel";
+
 
 const RandomScen = (props) => {
 
   const [formValues, setFormValues] = useState({
+    IP: "",
+    Scenario: "",
     Gender: "",
     Age: "",
+    Email: "",
     Education: "",
     LivingArea: "",
     NumberOfSmartHomeApps: "",
@@ -25,53 +31,57 @@ const RandomScen = (props) => {
     OvenFreq: "",
     DishwasherDirtLevel: "",
     DishwasherDishType: [],
-    DishwasherProgram: "",
+    DishwasherProgramNoNudge: "",
     DishwasherEcoProgram:"",
     DishwasherSocialNormProgram:"",
     WashingMachineDirtLevel: "",
     WashingMachineColor: "",
     WashingMachineFabricType: "",
-    WashingMachineProgram: "",
+    WashingMachineProgramNoNudge: "",
     WashingMachineEcoProgram: "",
     WashingMachineSocialNormProgram: "",
     OvenLevel: "",
     OvenFoodType:"",
-    OvenProgram: "",
+    OvenProgramNoNudge: "",
     OvenEcoProgram:"",
-    OvenSocialNormProgram:""
+    OvenSocialNormProgram:"",
+    // Email: ""
   });
-  const [startTime, setStartTime] = useState(null);
+  // const [startTime, setStartTime] = useState(null);
   const [userIp, setUserIp] = useState(null);
   const [scenario, setScenario] = useState(null);
-  const [ipExists, setIpExists] = useState(false);
-  const [ipFetched, setIpFetched] = useState(false);
-  const [prevUserIp, setPrevUserIp] = useState(null);
+  const [showThankYou, setShowThankYou] = useState(false);
 
+  // The userIp gets stored in db only if the experiment has been completed
+  // A check is made in the start of the experiment whether the userIp exists.
+  // If a userIp exists in db, they don't allow them to do the experiment again. (a "Thank you" page renders)
+  // If the userIp does not exist in db, it renders a scenario for them.
+  // If the user has done a part of the experiment but not getting it until the last page where the storing happens, then they have the potential to render a different scenario in every refresh.
+  // The user's scenario is stored in db in the end of the experiment to ensure it has completely done.
+  
   useEffect(() => {
     const getUserIp = async () => {
       try {
         const response = await axios.get("https://api.ipify.org?format=json");
         setUserIp(response.data.ip);
-        setIpFetched(true);
       } catch (error) {
         console.error(error);
       }
     };
-    if (ipFetched && userIp) {
+    if (userIp) {
       db.collection('users')
-      .where('ip', '==', userIp)
+      .where('IP', '==', userIp)
       .get()
       .then((querySnapshot) => {
         if (querySnapshot.empty) { // 
           // IP address doesn't exist in the database
           console.log('IP address does not exist in the database');
-          setIpExists(false);
           // Get the count of users for each scenario
           const scenarioCountPromises = [];
           for (let i = 1; i <= 9; i++) {
             const scenarioCountPromise = db
               .collection('users')
-              .where('scenario', '==', i)
+              .where('Scenario', '==', i)
               .get()
               .then((snapshot) => snapshot.size);
               console.log('scenarioCountPromise:', scenarioCountPromise);
@@ -79,9 +89,12 @@ const RandomScen = (props) => {
           }
           // Once we have the counts, find the scenario with the fewest users
           Promise.all(scenarioCountPromises).then((scenarioCounts) => {
+            console.log('scenarioCounts:', scenarioCounts);
             const minCount = Math.min(...scenarioCounts);
+            console.log('minCount:', minCount);
             const scenariosWithMinCount = [];
             scenarioCounts.forEach((count, index) => {
+              console.log('count:', count);
               if (count === minCount) {
                 scenariosWithMinCount.push(index + 1); // Scenario numbers are 1-based
               }
@@ -89,48 +102,48 @@ const RandomScen = (props) => {
             console.log('scenariosWithMinCount:', scenariosWithMinCount);
             // Randomly choose one of the scenarios with the fewest users
             const randomScenarioIndex = Math.floor(Math.random() * scenariosWithMinCount.length);
-            console.log('randomScenarioIndex:', randomScenarioIndex);
+            // console.log('randomScenarioIndex:', randomScenarioIndex);
             const scenarioNumber = scenariosWithMinCount[randomScenarioIndex];
             // Set the chosen scenario and store the IP address and chosen scenario in the database
             setScenario(scenarioNumber);
             console.log('scenario is:', scenarioNumber);
-            const userDocRef = doc(collection(db, 'users'), userIp);
-            setDoc(userDocRef, { id: userIp, scenario: scenarioNumber }, { merge: true });
           });
         } 
         else {
           // IP address already exists in the database
           console.log('IP address already exists in the database');
-          setIpExists(true);
+          // Redirect in Thank you for your participation page
+          setShowThankYou(true);
         }
       });
     }
     else {
       getUserIp();
     }
-  }, []);
+  }, [userIp]);
 
   const store = async () => {
     try {
       // Query Firestore for a user with the same ip address
       const usersRef = collection(db, 'users');
-      const queryRef = query(usersRef, where('ip', '==', userIp));
+      const queryRef = query(usersRef, where('IP', '==', userIp));
       const matchingDocs = await getDocs(queryRef);
 
-      if (matchingDocs.docs.length > 1) {
+      if (matchingDocs.docs.length === 1) {
         // User already exists with this email, do not allow recording data again
         console.error('A user with this ip address already exists.');
-        return;
+        setShowThankYou(true);
       }
       else {
-        // console.log(formValues.level);
        // Update the Firestore document with the form values for the authenticated user
        const userDocRef = doc(db, 'users', userIp);
-       await updateDoc(userDocRef,{
-          ip: userIp,
-          durationInMinutes: (Date.now() - startTime) / (1000 * 60),
+       await setDoc(userDocRef,{
+          IP: userIp,
+          Scenario: scenario,
+          // durationInMinutes: (Date.now() - startTime) / (1000 * 60),
           Gender: formValues.Gender,
           Age: formValues.Age,
+          Email: formValues.Email,
           Education: formValues.Education,
           LivingArea: formValues.LivingArea,
           NumberOfSmartHomeApps: formValues.NumberOfSmartHomeApps,
@@ -139,39 +152,52 @@ const RandomScen = (props) => {
           OvenFreq: formValues.OvenFreq,
           DishwasherDirtLevel: formValues.DishwasherDirtLevel,
           DishwasherDishType: formValues.DishwasherDishType,
-          DishwasherProgram: formValues.DishwasherProgram,
+          DishwasherProgramNoNudge: formValues.DishwasherProgramNoNudge,
           DishwasherEcoProgram: formValues.DishwasherEcoProgram,
           DishwasherSocialNormProgram: formValues.DishwasherSocialNormProgram,
           WashingMachineDirtLevel: formValues.WashingMachineDirtLevel,
           WashingMachineColor: formValues.WashingMachineColor,
           WashingMachineFabricType: formValues.WashingMachineFabricType,
-          WashingMachineProgram: formValues.WashingMachineProgram,
+          WashingMachineProgramNoNudge: formValues.WashingMachineProgramNoNudge,
           WashingMachineEcoProgram: formValues.WashingMachineEcoProgram,
           WashingMachineSocialNormProgram: formValues.WashingMachineSocialNormProgram,
           OvenLevel: formValues.OvenLevel,
           OvenFoodType: formValues.OvenFoodType,
-          OvenProgram: formValues.OvenProgram,
+          OvenProgramNoNudge: formValues.OvenProgramNoNudge,
           OvenEcoProgram: formValues.OvenEcoProgram,
-          OvenSocialNormProgram: formValues.OvenSocialNormProgram
+          OvenSocialNormProgram: formValues.OvenSocialNormProgram,
+          // Email: formValues.Email
         });
         console.log("Form values submitted successfully");
         setFormValues({
+          IP: "",
+          Scenario: "",
+          // durationInMinutes: (Date.now() - startTime) / (1000 * 60),
+          Gender: "",
+          Age: "",
+          Email: "",
+          Education: "",
+          LivingArea: "",
+          NumberOfSmartHomeApps: "",
+          DishwasherFreq: "",
+          WashingMachineFreq: "",
+          OvenFreq:"",
           DishwasherDirtLevel: "",
           DishwasherDishType: [],
-          DishwasherProgram: "",
+          DishwasherProgramNoNudge: "",
           DishwasherEcoProgram:"",
           DishwasherSocialNormProgram:"",
           WashingMachineDirtLevel: "",
           WashingMachineColor: "",
           WashingMachineFabricType: "",
-          WashingMachineProgram: "",
+          WashingMachineProgramNoNudge: "",
           WashingMachineEcoProgram: "",
           WashingMachineSocialNormProgram: "",
           OvenLevel: "",
           OvenFoodType:"",
-          OvenProgram: "",
+          OvenProgramNoNudge: "",
           OvenEcoProgram:"",
-          OvenSocialNormProgram:""
+          OvenSocialNormProgram:"", 
         });
         console.log(formValues);
       }
@@ -179,20 +205,27 @@ const RandomScen = (props) => {
     catch (e) {
     console.error('Form submission error: ', e);
     }
-    setPrevUserIp(userIp);
   };
 
   return (
-    <div>
-      {scenario === 1 && <Scen1 formValues={formValues} setFormValues={setFormValues} store={store} />}
-      {scenario === 2 && <Scen2 formValues={formValues} setFormValues={setFormValues} store={store} />}
-      {scenario === 3 && <Scen3 formValues={formValues} setFormValues={setFormValues} store={store} />}
-      {scenario === 4 && <Scen4 formValues={formValues} setFormValues={setFormValues} store={store} />}
-      {scenario === 5 && <Scen5 formValues={formValues} setFormValues={setFormValues} store={store} />}
-      {scenario === 6 && <Scen6 formValues={formValues} setFormValues={setFormValues} store={store} />}
-      {scenario === 7 && <Scen7 formValues={formValues} setFormValues={setFormValues} store={store} />}
-      {scenario === 8 && <Scen8 formValues={formValues} setFormValues={setFormValues} store={store} />}
-      {scenario === 9 && <Scen9 formValues={formValues} setFormValues={setFormValues} store={store} />}
+    <div className="total-random-scenario">
+      {/* <ExportToExcel /> */}
+      {showThankYou ? (
+        <ThankYou />
+      ) : (
+        <div className="random-scenario">
+          {scenario === 1 && <Scen1 formValues={formValues} setFormValues={setFormValues} store={store} />}
+          {scenario === 2 && <Scen2 formValues={formValues} setFormValues={setFormValues} store={store} />}
+          {scenario === 3 && <Scen3 formValues={formValues} setFormValues={setFormValues} store={store} />}
+          {scenario === 4 && <Scen4 formValues={formValues} setFormValues={setFormValues} store={store} />}
+          {scenario === 5 && <Scen5 formValues={formValues} setFormValues={setFormValues} store={store} />}
+          {scenario === 6 && <Scen6 formValues={formValues} setFormValues={setFormValues} store={store} />}
+          {scenario === 7 && <Scen7 formValues={formValues} setFormValues={setFormValues} store={store} />}
+          {scenario === 8 && <Scen8 formValues={formValues} setFormValues={setFormValues} store={store} />}
+          {scenario === 9 && <Scen9 formValues={formValues} setFormValues={setFormValues} store={store} />}
+        </div>
+      )
+    }
     </div>
   );  
 

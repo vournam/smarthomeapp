@@ -3,15 +3,15 @@ import WashingMachineHome from "./WashingMachineHome";
 import WashingMachineFabricType from './WashingMachineFabricType';
 import WashingMachineColor from './WashingMachineColor';
 import WashingMachineDirtLevel from './WashingMachineDirtLevel';
-import WashingMachineEcoProgram from './WashingMachineSocialNormProgram';
+import WashingMachineEcoProgram from './WashingMachineEcoProgram';
 import OvenHome from "./OvenHome";
 import OvenFoodType from './OvenFoodType';
 import OvenLevel from './OvenLevel';
-import OvenProgram from './OvenProgram';
+import OvenProgramNoNudge from './OvenProgramNoNudge';
 import DishwasherHome from "./DishwasherHome";
 import DishwasherDishType from './DishwasherDishType';
 import DishwasherDirtLevel from './DishwasherDirtLevel';
-import DishwasherSocialNormProgram from './DishwasherEcoProgram';
+import DishwasherSocialNormProgram from './DishwasherSocialNormProgram';
 import Progress from "./Progress";
 import Scenario from "./Scenario";
 
@@ -26,7 +26,7 @@ const Scen4 = (props) => {
     const page7 = OvenHome;
     const page8 = OvenFoodType;
     const page9 = OvenLevel;
-    const page10 = OvenProgram;
+    const page10 = OvenProgramNoNudge;
     const page11 = Progress;
     const page12 = DishwasherHome;
     const page13 = DishwasherDishType;

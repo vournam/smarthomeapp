@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef} from 'react';
 import { Button } from "react-bootstrap";
 import "./style.css";
 import Question from "./Question";
@@ -31,10 +31,12 @@ const Form2 = (props) => {
   const [selectedOption2, setSelectedOption2] = useState(null);
   const [selectedOption3, setSelectedOption3] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
+  const [showPopupAge, setShowPopupAge] = useState(false);
+  const scrollRef = useRef(null);
 
   const handleAgeChange = (event) => {
-    setAge(event.target.value);
     const value = event.target.value;
+    setAge(event.target.value);
     // console.log("value:", value);
     setFormValues({
       ...formValues,
@@ -62,7 +64,6 @@ const Form2 = (props) => {
   };
   const handleOptionChange3 = (event) => {
     setSelectedOption3(event.target.value);
-    const name = event.target.name;
     const value = event.target.value;
     // console.log("value:", value);
     setFormValues({
@@ -70,29 +71,104 @@ const Form2 = (props) => {
       LivingArea: value // Use computed property name to set the value based on the event target's name
     });
   };
-
-  const handleSubmit = () => {
-    if (age && selectedOption1 && selectedOption2 && selectedOption3 ) {
-      props.nextStep(formValues);
+  
+  const scrollToUnansweredQuestion = () => {
+    const unansweredQuestionIndices = [selectedOption1, age, selectedOption2, selectedOption3].reduce(
+      (acc, answer, index) => {
+        if (!answer) {
+          acc.push(index);
+        }
+        return acc;
+      },
+      []
+    );
+  
+    if (unansweredQuestionIndices.length > 0) {
+      const questionContainers = Array.from(scrollRef.current.getElementsByClassName('form-container'));
+  
+      // Apply red border class to unanswered question containers
+      questionContainers.forEach((container, index) => {
+        if (unansweredQuestionIndices.includes(index)) {
+          container.classList.add('unanswered-question');
+        } else {
+          container.classList.remove('unanswered-question');
+        }
+      });
+  
+      const firstUnansweredQuestionIndex = unansweredQuestionIndices[0];
+      const unansweredQuestionContainer = questionContainers[firstUnansweredQuestionIndex];
+  
+      const containerTop = scrollRef.current.offsetTop;
+      const questionTop = unansweredQuestionContainer.offsetTop;
+      const scrollPosition = containerTop + questionTop - 100;
+  
+      window.scrollTo({
+        top: scrollPosition,
+        behavior: 'smooth'
+      });
     }
+  };  
+
+  // const scrollToUnansweredQuestion = () => {
+  //   const unansweredQuestionIndex = [selectedOption1, age, selectedOption2, selectedOption3].findIndex(
+  //     (answer) => !answer
+  //   );
+  
+  //   if (unansweredQuestionIndex !== -1) {
+  //     const questionContainers = Array.from(scrollRef.current.getElementsByClassName('form-container'));
+  //     const unansweredQuestionContainer = questionContainers[unansweredQuestionIndex];
+  
+  //     const containerTop = scrollRef.current.offsetTop;
+  //     const questionTop = unansweredQuestionContainer.offsetTop;
+  //     const scrollPosition = containerTop + questionTop;
+  
+  //     // Apply red border class to the unanswered question container
+  //     questionContainers.forEach((container) => {
+  //       container.classList.remove('unanswered-question');
+  //     });
+  //     unansweredQuestionContainer.classList.add('unanswered-question');
+
+  //     window.scrollTo({
+  //       top: scrollPosition,
+  //       behavior: 'smooth'
+  //     });
+  //   }
+  // };
+
+  const handleSubmit = (event) => {
+    event.preventDefault(); // Prevent default form submission behavior
+
+    if (age && selectedOption1 && selectedOption2 && selectedOption3) {
+      if ( (age>0 && age<120) || age === "-") {
+        props.nextStep(formValues);
+        
+      } else {
+        setShowPopupAge(true);
+        setTimeout(() => {
+          setShowPopupAge(false);
+          scrollToUnansweredQuestion();
+        }, 1700); // Duration as needed (in milliseconds)
+        
+      }
+    } 
     else {
       setShowPopup(true);
       setTimeout(() => {
         setShowPopup(false);
+        scrollToUnansweredQuestion();
       }, 1700); // Duration as needed (in milliseconds)
     }
-    
   };
 
   return (
-    <div className="background">
+    <div className="background" ref={scrollRef}>
       <div className="form-subheader">Δημογραφικά στοιχεία</div>
       <form method="get" className="questionnaire" name='questionnaire' onSubmit={handleSubmit}>
         <div className="form-container">
           <Question legend={l1} opt1={opta1} opt2={opta2} opt3={opta3} opt4={opta4} selectedOption={selectedOption1} handleOptionChange={handleOptionChange1} />
         </div>
         <div className="form-container">
-          <label className="age" htmlFor="age">Ηλικία</label>
+          <label className="age" htmlFor="age">Ηλικία:</label>
           <input
           type="number"
           value={age}
@@ -116,9 +192,15 @@ const Form2 = (props) => {
         contentLabel="Terms Popup"
         overlayClassName="modal-overlay"
         className="modal-content"
-      >
-        <h4 className="modal-h4">Παρακαλώ συμπληρώστε όλες τις ερωτήσεις για να συνεχίσετε.</h4>
-      </Modal>
+      >Παρακαλώ, συμπληρώστε όλα τα πεδία για να συνεχίσετε.</Modal>
+
+      <Modal
+        isOpen={showPopupAge}
+        onRequestClose={() => setShowPopupAge(false)}
+        contentLabel="Terms Popup"
+        overlayClassName="modal-overlay"
+        className="modal-content"
+      >Παρακαλώ, συμπληρώστε ορθά την ηλικία σας για να συνεχίσετε.</Modal>
 
     </div>
   );
