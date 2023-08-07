@@ -2,8 +2,10 @@ import React, {useState, useRef, useEffect} from "react";
 import { Button } from "react-bootstrap";
 import "./style.css";
 import Modal from "react-modal";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 
-const ProgramEcoSymbol = (props) => {
+const ProgramSocialNorm = (props) => {
 
   const options = ['Πρόγραμμα 1', 'Πρόγραμμα 2', 'Πρόγραμμα 3', 'Πρόγραμμα 4', 'Πρόγραμμα 5'];
 
@@ -12,11 +14,13 @@ const ProgramEcoSymbol = (props) => {
   const setFormValues = props.setFormValues;
   const [showPopup, setShowPopup] = useState(false);
   const scrollRef = useRef(null);
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
 
   const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
-    
+    const selectedIndex = parseInt(event.target.id.split('_')[2], 10);
+    setSelectedOptionIndex(selectedIndex);
     setFormValues({
       ...formValues,
       [name]: value // Use computed property name to set the value based on the event target's name
@@ -74,14 +78,15 @@ const ProgramEcoSymbol = (props) => {
       </div>
       <p className="question">{props.question}</p>
       <div className="socialnorm-text">
-        <img className="socialnorm-text-icon" alt="" src="https://drive.google.com/uc?id=19a9jWaIIS3I3_TwBolmcNmW7dqj8HXhj" />
+        {/* <img className="socialnorm-text-icon" alt="" src="https://drive.google.com/uc?id=1XwerBrZ9n7pRxh3i_29sw03dYigU-Atn" /> */}
+        <FontAwesomeIcon className="socialnorm-text-icon" icon={faCircleInfo} style={{ color: 'darkslategray' }} />
         <p>52.5% χρηστών με παρόμοιες επιλογές προτιμούν το Πρόγραμμα 2.</p>
       </div>
       <form className="options" method="get" name={`${varProp}`} onSubmit={handleSubmit}>
         {options.map((option, index) => (
           <div className={`eco-program-selection${index}`} key={option}>  
-            <div className="container program-container"> 
-              <label className="eco-program-selection-label" htmlFor={`${varProp}`} > 
+            <div className={`container program-container ${selectedOptionIndex === index ? 'selected' : ''}`}>
+              <label className="eco-program-selection-label" htmlFor={`radio_${varProp}_${index}`} > 
                 {option}
                 <div className="info">{props.info[index]} </div>
               </label>
@@ -91,6 +96,7 @@ const ProgramEcoSymbol = (props) => {
                 value={option}     
                 onChange={handleChange}
                 checked={formValues[varProp]  === `${option}`}
+                id={`radio_${varProp}_${index}`}
               />
             </div>
             <hr />
@@ -113,4 +119,4 @@ const ProgramEcoSymbol = (props) => {
   );
 };
 
-export default ProgramEcoSymbol;
+export default ProgramSocialNorm;

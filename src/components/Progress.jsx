@@ -1,27 +1,35 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
 
 const Progress = (props) => {
+  const [progress, setProgress] = useState(0);
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            goToNextPage();
-        }, 1500);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (progress < 100) {
+        setProgress((prevProgress) => prevProgress + 1);
+      } else {
+        goToNextPage();
+      }
+    }, 15); // Adjust the interval for smoother progress animation
 
-        return () => {
-            clearTimeout(timer);
-        };
-    }, []);
-
-    const goToNextPage = () => {
-        props.nextStep();
+    return () => {
+      clearInterval(timer);
     };
+  }, [progress]);
 
-    return (
-        <div className="progress-background">
-            <p className="progress-text">Το προσαρμοσμένο πρόγραμμά σας βρίσκεται σε εξέλιξη...</p>
-        </div>
-    );
+  const goToNextPage = () => {
+    props.nextStep();
+  };
+
+  return (
+    <div className="progress-background">
+      <p className="progress-text">Το προσαρμοσμένο πρόγραμμά σας βρίσκεται σε εξέλιξη...</p>
+      <div className="progress-bar">
+        <div className="progress-fill" style={{ width: `${progress}%` }}></div>
+      </div>
+    </div>
+  );
 };
 
 export default Progress;

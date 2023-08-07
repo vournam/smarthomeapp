@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import "./style.css";
 import Modal from "react-modal";
 
-const ProgramEcoSymbol = (props) => {
+const ProgramNoNudge = (props) => {
 
   const options = ['Πρόγραμμα 1', 'Πρόγραμμα 2', 'Πρόγραμμα 3', 'Πρόγραμμα 4', 'Πρόγραμμα 5'];
   const varProp = props.variable;
@@ -11,13 +11,15 @@ const ProgramEcoSymbol = (props) => {
   const setFormValues = props.setFormValues;
   const [showPopup, setShowPopup] = useState(false);
   const scrollRef = useRef(null);
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
 
   const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
     // console.log(name, value);
     // console.log(formValues);
-    
+    const selectedIndex = parseInt(event.target.id.split('_')[2], 10);
+    setSelectedOptionIndex(selectedIndex);
     setFormValues({
       ...formValues,
       [name]: value // Use computed property name to set the value based on the event target's name
@@ -77,8 +79,8 @@ const ProgramEcoSymbol = (props) => {
       <form className="options" method="get" name={`${varProp}`} onSubmit={handleSubmit}>
         {options.map((option, index) => (
           <div className={`eco-program-selection${index}`} key={option}>  
-            <div className="container program-container"> 
-              <label className="eco-program-selection-label" htmlFor={`${varProp}`}> 
+            <div className={`container program-container ${selectedOptionIndex === index ? 'selected' : ''}`}>
+              <label className="eco-program-selection-label" htmlFor={`radio_${varProp}_${index}`}> 
                 {option}
                 <div className="info">{props.info[index]} </div>
               </label>
@@ -88,6 +90,7 @@ const ProgramEcoSymbol = (props) => {
                 value={option}
                 onChange={handleChange}
                 checked={formValues[varProp]  === `${option}`}
+                id={`radio_${varProp}_${index}`}
               />
             </div>
             <hr />
@@ -110,4 +113,4 @@ const ProgramEcoSymbol = (props) => {
   );
 };
 
-export default ProgramEcoSymbol;
+export default ProgramNoNudge;

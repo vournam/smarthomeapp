@@ -3,7 +3,7 @@ import ProgramEcoSymbol from "./ProgramEcoSymbol";
 
 const DishwasherEcoProgram = (props) => {
 
-  const info = [`50°C ${"\u00A0"} 100’`, `40°C ${"\u00A0"} 120’`, `60°C ${"\u00A0"} 80’`, `70°C ${"\u00A0"} 60’`, `90°C ${"\u00A0"} 40’`];
+  const info = [`50°C ${"\u00A0"} 58’`, `40°C ${"\u00A0"} 65’`, `60°C ${"\u00A0"} 55’`, `70°C ${"\u00A0"} 50’`, `90°C ${"\u00A0"} 48’`];
   const question = "Τα παρακάτω προγράμματα είναι κατάλληλα:";
   const variable = "DishwasherEcoProgram";
   const formValues = props.formValues;

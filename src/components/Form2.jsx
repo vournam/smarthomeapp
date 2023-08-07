@@ -2,28 +2,16 @@ import React, { useState, useRef} from 'react';
 import { Button } from "react-bootstrap";
 import "./style.css";
 import Question from "./Question";
-import Question8 from "./Question8";
 import Modal from "react-modal";
 
 const Form2 = (props) => {
 
-  const l1 = "Αυτοπροσδιορίζεστε ως:";
-  const opta1 = "Άνδρας";
-  const opta2 = "Γυναίκα";
-  const opta3 = "Μη δυαδικό";
-  const opta4 = "Δεν γνωρίζω / επιθυμώ να απαντήσω";
-  const l2 = `Ποιος είναι ο υψηλότερος βαθμός ή το επίπεδο του σχολείου που έχετε ολοκληρώσει; Εάν είστε ήδη εγγεγραμμένοι, λαμβάνεται ως ο υψηλότερος βαθμός.`;
-  const optb1 = "Δεν ολοκληρώθηκε καμία εκπαίδευση";
-  const optb2 = "Απόφοιτος Δημοτικού";
-  const optb3 = "Απόφοιτος Γυμνασίου";
-  const optb4 = "Απόφοιτος Λυκείου";
-  const optb5 = "Πτυχίο Πανεπιστημίου";
-  const optb6 = "Μεταπτυχιακό";
-  const optb7 = "Διδακτορικό";
-  const l3 = "Ποιο από αυτά περιγράφει καλύτερα πού ζείτε;";
-  const optc1 = "Πόλη";
-  const optc2 = "Προάστιο πόλης";
-  const optc3 = "Αγροτική";
+  const l1 = "Αυτοπροσδιορίζεστε ως: (*)";
+  const options1=["Άνδρας", "Γυναίκα", "Μη δυαδικό", "Δεν γνωρίζω/επιθυμώ να απαντήσω"];
+  const l2 = `Ποιος είναι ο υψηλότερος βαθμός ή το επίπεδο του σχολείου που έχετε ολοκληρώσει; Εάν είστε ήδη εγγεγραμμένοι, λαμβάνεται ως ο υψηλότερος βαθμός. (*)`;
+  const options2=["Δεν ολοκληρώθηκε καμία εκπαίδευση", "Απόφοιτος Δημοτικού", "Απόφοιτος Γυμνασίου", "Απόφοιτος Λυκείου", "Πτυχίο Πανεπιστημίου", "Μεταπτυχιακό", "Διδακτορικό", "Δεν γνωρίζω/επιθυμώ να απαντήσω"];
+  const l3 = "Ποιο από αυτά περιγράφει καλύτερα πού ζείτε; (*)";
+  const options3=["Πόλη", "Προάστιο πόλης", "Αγροτική", "Δεν γνωρίζω/επιθυμώ να απαντήσω"];
   const [age, setAge] = useState('');
   const formValues = props.formValues;
   const setFormValues = props.setFormValues;
@@ -33,6 +21,9 @@ const Form2 = (props) => {
   const [showPopup, setShowPopup] = useState(false);
   const [showPopupAge, setShowPopupAge] = useState(false);
   const scrollRef = useRef(null);
+  const [selectedOptionIndex1, setSelectedOptionIndex1] = useState(null);
+  const [selectedOptionIndex2, setSelectedOptionIndex2] = useState(null);
+  const [selectedOptionIndex3, setSelectedOptionIndex3] = useState(null);
 
   const handleAgeChange = (event) => {
     const value = event.target.value;
@@ -48,6 +39,9 @@ const Form2 = (props) => {
     setSelectedOption1(event.target.value);
     const value = event.target.value;
     // console.log("value:", value);
+    const selectedIndex = parseInt(event.target.id);
+    // console.log('option1:',selectedIndex);
+    setSelectedOptionIndex1(selectedIndex);
     setFormValues({
       ...formValues,
       Gender: value // Use computed property name to set the value based on the event target's name
@@ -57,6 +51,8 @@ const Form2 = (props) => {
     setSelectedOption2(event.target.value);
     const value = event.target.value;
     // console.log("value:", value);
+    const selectedIndex = parseInt(event.target.id);
+    setSelectedOptionIndex2(selectedIndex);
     setFormValues({
       ...formValues,
       Education: value // Use computed property name to set the value based on the event target's name
@@ -66,6 +62,8 @@ const Form2 = (props) => {
     setSelectedOption3(event.target.value);
     const value = event.target.value;
     // console.log("value:", value);
+    const selectedIndex = parseInt(event.target.id);
+    setSelectedOptionIndex3(selectedIndex);
     setFormValues({
       ...formValues,
       LivingArea: value // Use computed property name to set the value based on the event target's name
@@ -75,7 +73,7 @@ const Form2 = (props) => {
   const scrollToUnansweredQuestion = () => {
     const unansweredQuestionIndices = [selectedOption1, age, selectedOption2, selectedOption3].reduce(
       (acc, answer, index) => {
-        if (!answer) {
+        if (!answer || answer<10 || answer>120) {
           acc.push(index);
         }
         return acc;
@@ -109,37 +107,11 @@ const Form2 = (props) => {
     }
   };  
 
-  // const scrollToUnansweredQuestion = () => {
-  //   const unansweredQuestionIndex = [selectedOption1, age, selectedOption2, selectedOption3].findIndex(
-  //     (answer) => !answer
-  //   );
-  
-  //   if (unansweredQuestionIndex !== -1) {
-  //     const questionContainers = Array.from(scrollRef.current.getElementsByClassName('form-container'));
-  //     const unansweredQuestionContainer = questionContainers[unansweredQuestionIndex];
-  
-  //     const containerTop = scrollRef.current.offsetTop;
-  //     const questionTop = unansweredQuestionContainer.offsetTop;
-  //     const scrollPosition = containerTop + questionTop;
-  
-  //     // Apply red border class to the unanswered question container
-  //     questionContainers.forEach((container) => {
-  //       container.classList.remove('unanswered-question');
-  //     });
-  //     unansweredQuestionContainer.classList.add('unanswered-question');
-
-  //     window.scrollTo({
-  //       top: scrollPosition,
-  //       behavior: 'smooth'
-  //     });
-  //   }
-  // };
-
   const handleSubmit = (event) => {
     event.preventDefault(); // Prevent default form submission behavior
 
     if (age && selectedOption1 && selectedOption2 && selectedOption3) {
-      if ( (age>0 && age<120) || age === "-") {
+      if ( (age>15 && age<120) || age === "-") {
         props.nextStep(formValues);
         
       } else {
@@ -164,24 +136,25 @@ const Form2 = (props) => {
     <div className="background" ref={scrollRef}>
       <div className="form-subheader">Δημογραφικά στοιχεία</div>
       <form method="get" className="questionnaire" name='questionnaire' onSubmit={handleSubmit}>
+        <p className="mandatory">Οι ερωτήσεις με (*) είναι υποχρεωτικές.</p>
         <div className="form-container">
-          <Question legend={l1} opt1={opta1} opt2={opta2} opt3={opta3} opt4={opta4} selectedOption={selectedOption1} handleOptionChange={handleOptionChange1} />
+          <Question legend={l1} options={options1} selectedOption={selectedOption1} handleOptionChange={handleOptionChange1} selectedOptionIndex={selectedOptionIndex1} />
         </div>
         <div className="form-container">
-          <label className="age" htmlFor="age">Ηλικία:</label>
+          <label className="age" htmlFor="age">Ηλικία: (*)</label>
           <input
           type="number"
           value={age}
           onChange={handleAgeChange}
-          min={10}
+          min={16}
           max={120}
         />
         </div>
         <div className="form-container">
-          <Question8 legend={l2} opt1={optb1} opt2={optb2} opt3={optb3} opt4={optb4} opt5={optb5} opt6={optb6} opt7={optb7} opt8={opta4} selectedOption={selectedOption2} handleOptionChange={handleOptionChange2} />
+          <Question legend={l2} options={options2} selectedOption={selectedOption2} handleOptionChange={handleOptionChange2} selectedOptionIndex={selectedOptionIndex2} />
         </div>
         <div className="form-container last">
-          <Question legend={l3} opt1={optc1} opt2={optc2} opt3={optc3} opt4={opta4} selectedOption={selectedOption3} handleOptionChange={handleOptionChange3} />
+          <Question legend={l3} options={options3} selectedOption={selectedOption3} handleOptionChange={handleOptionChange3} selectedOptionIndex={selectedOptionIndex3} />
         </div>
       </form>
       <Button type="submit" className="next" onClick={handleSubmit} >Επόμενο</Button> 
@@ -192,7 +165,7 @@ const Form2 = (props) => {
         contentLabel="Terms Popup"
         overlayClassName="modal-overlay"
         className="modal-content"
-      >Παρακαλώ, συμπληρώστε όλα τα πεδία για να συνεχίσετε.</Modal>
+      >Παρακαλώ, συμπληρώστε όλα τα υποχρεωτικά πεδία για να συνεχίσετε.</Modal>
 
       <Modal
         isOpen={showPopupAge}

@@ -1,9 +1,9 @@
 import React from "react";
 import ProgramNoNudge from "./ProgramNoNudge";
 
-const DishwasherProgram = (props) => {
+const DishwasherProgramNoNudge = (props) => {
 
-  const info = [`50°C ${"\u00A0"} 100’`, `40°C ${"\u00A0"} 120’`, `60°C ${"\u00A0"} 80’`, `70°C ${"\u00A0"} 60’`, `90°C ${"\u00A0"} 40’`];
+  const info = [`50°C ${"\u00A0"} 58’`, `40°C ${"\u00A0"} 65’`, `60°C ${"\u00A0"} 55’`, `70°C ${"\u00A0"} 50’`, `90°C ${"\u00A0"} 48’`];
   const question = "Τα παρακάτω προγράμματα είναι κατάλληλα:";
   const variable = "DishwasherProgramNoNudge";
   const formValues = props.formValues;
@@ -15,4 +15,4 @@ const DishwasherProgram = (props) => {
     <ProgramNoNudge info={info} question={question} variable={variable} nextStep={props.nextStep} formValues={formValues} setFormValues={setFormValues} stagesCount={stagesCount} position={position} />
     );
   };
-export default DishwasherProgram;
+export default DishwasherProgramNoNudge;

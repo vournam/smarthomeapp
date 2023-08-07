@@ -6,26 +6,26 @@ import { saveAs } from 'file-saver';
 import { db } from "../firebase";
 import { doc, setDoc, collection, query, where, getDocs } from "firebase/firestore"; 
 
-const exportToExcel = async () => {
-  try {
-    const querySnapshot = await db.collection('users').get();
-    const data = querySnapshot.docs.map(doc => doc.data());
+const ExportToExcel = () => {
+  const handleExport = async () => {
+    try {
+      const querySnapshot = await db.collection('users').get();
+      const data = querySnapshot.docs.map(doc => doc.data());
 
-    const worksheet = XLSX.utils.json_to_sheet(data);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Users');
-    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-    const dataBlob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-    saveAs(dataBlob, 'users.xlsx');
-  } catch (error) {
-    console.error('Error exporting Firestore data:', error);
-  }
-};
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Users');
+      const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+      const dataBlob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      saveAs(dataBlob, 'users.xlsx');
+    } catch (error) {
+      console.error('Error exporting Firestore data:', error);
+    }
+  };
 
-const ExportButton = () => {
   return (
-    <button onClick={exportToExcel}>Export to Excel</button>
+    <button onClick={handleExport}>Export to Excel</button>
   );
 };
 
-export default ExportButton;
+export default ExportToExcel;

@@ -3,7 +3,7 @@ import ProgramSocialNorm from "./ProgramSocialNorm";
 
 const OvenSocialNormProgram = (props) => {
 
-  const info = [`200°C ${"\u00A0"} γκριλ ${"\u00A0"} 55’`, `160°C ${"\u00A0"} θερμός αέρας ${"\u00A0"} 135’`, `180°C ${"\u00A0"} πάνω/κάτω αντίστ. ${"\u00A0"} 95’`, `170°C ${"\u00A0"} θερμός αέρας ${"\u00A0"} 115’`, `190°C ${"\u00A0"} γκριλ με αέρα ${"\u00A0"} 75’`];
+  const info = [`200°C ${"\u00A0"} γκριλ ${"\u00A0"} 55’`, `160°C ${"\u00A0"} θερμός αέρας ${"\u00A0"} 75’`, `180°C ${"\u00A0"} πάνω/κάτω αντίστ. ${"\u00A0"} 65’`, `170°C ${"\u00A0"} θερμός αέρας ${"\u00A0"} 70’`, `190°C ${"\u00A0"} γκριλ με αέρα ${"\u00A0"} 60’`];
   const question = "Τα παρακάτω προγράμματα είναι κατάλληλα:";
   const variable="OvenSocialNormProgram";
   const formValues = props.formValues;

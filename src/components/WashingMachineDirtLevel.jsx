@@ -1,7 +1,7 @@
 import React from "react";
 import DirtLevel from "./DirtLevel";
 
-const WahingMachineDirtLevel = (props) => {
+const WashingMachineDirtLevel = (props) => {
   const question = "Πόσο λερωμένα είναι τα ρούχα σας όταν τα βάζετε στο πλυντήριο;";
   const img = ['https://drive.google.com/uc?id=1yvbTv5xAzh_dphdgCUXx2A1qgPgL9YlB', 'https://drive.google.com/uc?id=1mgKVM3jecUMw7D8uMsJsTnF7TpOdXl9H', 'https://drive.google.com/uc?id=1WGgPkT9fBVKG-zbI70wt4ZHnUkDEDR5u'];
   const options = ['Ελαφρώς λερωμένα', 'Μέτρια λερωμένα', 'Έντονα λερωμένα'];
@@ -15,4 +15,4 @@ const WahingMachineDirtLevel = (props) => {
     <DirtLevel question={question} img={img} options={options} nextStep={props.nextStep} variable={variable} formValues={formValues} setFormValues={setFormValues} stagesCount={stagesCount} position={position} />
     );
   };
-export default WahingMachineDirtLevel;
+export default WashingMachineDirtLevel;

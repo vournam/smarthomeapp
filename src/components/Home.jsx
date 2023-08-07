@@ -24,15 +24,14 @@ const Home = (props) => {
         <h1 className="option-title">ΠΡΟΓΡΑΜΜΑΤΑ</h1>
 
         <Link to="/form" onClick={onOption1Click} className="option">
-          {/* <div > */}
             <div className="option-text option-1">Επιλέξτε πρόγραμμα</div>
             <img
               className="select-icon"
               alt=""
               src="https://drive.google.com/uc?id=1IrHaT-DlIIOs2bR3Owuj2fvQEjWH7JPT"
             />
-          {/* </div> */}
         </Link>
+        <hr />
 
         <div className="option">
           <div className="option-text">Πρόσθετες επιλογές</div>
@@ -42,6 +41,7 @@ const Home = (props) => {
             src="https://drive.google.com/uc?id=1IrHaT-DlIIOs2bR3Owuj2fvQEjWH7JPT"
           />
         </div>
+        <hr />
 
         <h1 className="option-title">ΩΡΑ ΕΝΑΡΞΗΣ</h1>
 
@@ -53,6 +53,7 @@ const Home = (props) => {
             src="https://drive.google.com/uc?id=1IrHaT-DlIIOs2bR3Owuj2fvQEjWH7JPT"
           />
         </div>
+        <hr />
 
         <h1 className="option-title">ΚΑΘΑΡΙΣΜΟΣ ΣΥΣΚΕΥΗΣ</h1>
 
@@ -64,6 +65,7 @@ const Home = (props) => {
             src="https://drive.google.com/uc?id=1IrHaT-DlIIOs2bR3Owuj2fvQEjWH7JPT"
           />
         </div>  
+        <hr />
 
       </div>
     </div>

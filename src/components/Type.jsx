@@ -9,19 +9,28 @@ const Type = (props) => {
   const setFormValues = props.setFormValues;
   const [showPopup, setShowPopup] = useState(false);
   const scrollRef = useRef(null);
+  const [selectedOptionIndexes, setSelectedOptionIndexes] = useState([]);
 
   const handleChange = (event) => {
-    let newDishwasherDishType = formValues.DishwasherDishType;
-    if (event.target.checked) {
-      newDishwasherDishType.push(event.target.value);
+    const { checked, value, id } = event.target;
+    let newDishwasherDishType = formValues.DishwasherDishType.slice(); // Create a copy of the array
+  
+    if (checked) {
+      newDishwasherDishType.push(value);
+      const selectedIndex = parseInt(id.split('_')[2], 10);
+      setSelectedOptionIndexes([...selectedOptionIndexes, selectedIndex]);
     } else {
-      newDishwasherDishType = newDishwasherDishType.filter((type) => type !== event.target.value);
+      newDishwasherDishType = newDishwasherDishType.filter((type) => type !== value);
+      const selectedIndex = parseInt(id.split('_')[2], 10);
+      setSelectedOptionIndexes(selectedOptionIndexes.filter((index) => index !== selectedIndex));
     }
+  
     setFormValues({
       ...formValues,
-      DishwasherDishType: newDishwasherDishType
+      DishwasherDishType: newDishwasherDishType,
     });
   };
+  
 
   const scrollToTop = () => {
     if (scrollRef.current) {
@@ -64,23 +73,24 @@ const Type = (props) => {
         <p className="question">{props.question}</p>
         <form className="options" method="get" name="DishwasherDishType" onSubmit={handleSubmit} >
           {props.options.map((option, index) => ( 
-            <div className={ `dish-type-checkbox${index}`} key={option} >  
-              <div className="container">
+            <div className={ `dish-type-checkbox${index} dish-type`} key={option} >  
+              <div className={`container ${selectedOptionIndexes.includes(index) ? 'selected' : ''}`}>
                 <img className="dish-type-icon" alt="" src={props.img[index]} />
-                <label className="dish-type-label" htmlFor="DishwasherDishType"> {option}</label>
+                <label className="dish-type-label" htmlFor={`checkbox_DishwasherDishType_${index}`}> {option}</label>
                 <input 
                   type="checkbox"
                   name = "DishwasherDishType"
                   value={option}
                   onChange={handleChange}
                   checked={formValues.DishwasherDishType.includes(`${option}`)}
+                  id={`checkbox_DishwasherDishType_${index}`}
                 />
               </div>
               <hr />
             </div>
           ))}
         </form>
-        <Button className="next" type="submit" onClick={handleSubmit} > {/*must done disabled */}
+        <Button className="next" type="submit" onClick={handleSubmit} > 
         Επόμενο
         </Button>
 

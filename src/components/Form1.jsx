@@ -43,15 +43,16 @@ const Form1 = (props) => {
   return (
     <div className="background" ref={scrollRef}>
       <div className="form-container img-container">
-        <img className="form-img" alt="" src="https://drive.google.com/uc?id=12C-2pEy1XlYJnY1NJ4CrFvHfei5JzKVE" />
+        <img className="form-img" alt="" src="https://drive.google.com/uc?id=1kFLAA3IB0ufY5hvtU0bcidgnhMyIxfCe" />
       </div>
       <div className="form-container">
         <div className="form-header">Ερωτηματολόγιο Διπλωματικής Εργασίας</div>
-        <p className="form-p">Το παρόν ερωτηματολόγιο αποτελεί μέρος του πειράματος που διεξάγεται στα πλαίσια εκπόνησης  διπλωματικής εργασίας του μεταπτυχιακού "Human-Computer Interaction / HCI" των Τμημάτων Μηχανικών Η/Υ και Πληροφορικής &amp; Ηλεκτρολόγων Μηχανικών και Τεχνολογίας Υπολογιστών του Πανεπιστημίου Πατρών.</p>
+        <p className="form-p">Το παρόν ερωτηματολόγιο αποτελεί μέρος του πειράματος που διεξάγεται στα πλαίσια εκπόνησης  διπλωματικής εργασίας του μεταπτυχιακού "Human-Computer Interaction (HCI)" των Τμημάτων Μηχανικών Η/Υ και Πληροφορικής &amp; Ηλεκτρολόγων Μηχανικών και Τεχνολογίας Υπολογιστών του Πανεπιστημίου Πατρών.</p>
         <p className="form-p">Οι ερωτήσεις που ακολουθούν απευθύνονται αποκλειστικά σε όσους επιθυμούν να συμμετέχουν στο πείραμα.</p>
         <p className="italic form-p instruct-note">Eκτιμώμενος χρόνος ολοκλήρωσης ερωτηματολογίου: 1-2 λεπτά</p>
       </div>
       <div className="form-container last">
+        <div className="form-header">Επεξεργασία Προσωπικών Δεδομένων</div>
         <p className="form-p">Eπιτρέπω στο Πανεπιστήμιο Πατρών προσωπικά μου δεδομένα να μπορούν να συσχετιστούν με το υλικό της έρευνας και για τις ανάγκες υλοποίησής της.</p>
         <p className="form-p">Ενημερώνομαι ότι δεν θα υπάρξει καμία συσχέτιση των δεδομένων με το όνομά μου και ότι όλα τα δεδομένα θα γίνουν ανώνυμα αμέσως μετά την επεξεργασία τους.</p>
         <p className="italic form-p instruct-note">Η συναίνεση παρέχεται σύμφωνα με το άρθρο 57 του Αστικού Κώδικα και του Γενικού Κανονισμού 2016/679 του Ευρωπαϊκού Κοινοβουλίου και Συμβουλίου για αόριστο χρόνο. Γίνεται μνεία ότι διατηρώ δικαίωμα ανάκλησης ή μερικής τροποποίησης του δικαιώματος και των προσωπικών δεδομένων που παρέχω.</p>
@@ -62,7 +63,7 @@ const Form1 = (props) => {
               name="accept-terms"
               onChange={handleChange}
               checked={isChecked} />
-              <label className="form-p bold" htmlFor="accept-terms">Αποδοχή</label>
+              <label className="form-p bold accept-label" htmlFor="accept-terms">Αποδοχή</label>
           </div>
         </form>
       </div>

@@ -84,7 +84,7 @@ const RandomScen = (props) => {
               .where('Scenario', '==', i)
               .get()
               .then((snapshot) => snapshot.size);
-              console.log('scenarioCountPromise:', scenarioCountPromise);
+              // console.log('scenarioCountPromise:', scenarioCountPromise);
             scenarioCountPromises.push(scenarioCountPromise);
           }
           // Once we have the counts, find the scenario with the fewest users
@@ -94,7 +94,7 @@ const RandomScen = (props) => {
             console.log('minCount:', minCount);
             const scenariosWithMinCount = [];
             scenarioCounts.forEach((count, index) => {
-              console.log('count:', count);
+              // console.log('count:', count);
               if (count === minCount) {
                 scenariosWithMinCount.push(index + 1); // Scenario numbers are 1-based
               }

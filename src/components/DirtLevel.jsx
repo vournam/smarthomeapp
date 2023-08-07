@@ -10,10 +10,13 @@ const DirtLevel = (props) => {
   const setFormValues = props.setFormValues;
   const [showPopup, setShowPopup] = useState(false);
   const scrollRef = useRef(null);
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
 
   const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
+    const selectedIndex = parseInt(event.target.id.split('_')[2], 10);
+    setSelectedOptionIndex(selectedIndex);
     setFormValues({
       ...formValues,
       [name]: value // Use computed property name to set the value based on the event target's name
@@ -73,18 +76,19 @@ const DirtLevel = (props) => {
       <form className="options" method="get" name={`${varProp}`} onSubmit={handleSubmit}>
         {props.options.map((option, index) => (
           <div className={`dirt-level-radio${index}`} key={option}>  
-          <div className="container"> 
+          <div className={`container dirt-level ${selectedOptionIndex === index ? 'selected' : ''}`}>
             <img className={`dirt-level-icon${index}`} alt="" src={props.img[index]} />
-              <label className="dirt-level-label" htmlFor={`${varProp}`}> {option}</label>
+              <label className="dirt-level-label" htmlFor={`radio_${varProp}_${index}`}> {option}</label>
               <input
                 type="radio"
                 name = {`${varProp}`}
                 value={option}
                 onChange={handleChange}
                 checked={formValues[varProp]  === `${option}`}
+                id={`radio_${varProp}_${index}`}
               />
             </div>
-            <hr className={`hr${index}`} />
+            <hr />
           </div>
         ))}
       </form>

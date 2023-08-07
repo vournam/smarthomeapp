@@ -3,7 +3,7 @@ import ProgramSocialNorm from "./ProgramSocialNorm";
 
 const WashingMachineSocialNormProgram = (props) => {
 
-  const info = [`60°C ${"\u00A0"} 700 στοφές/λεπτό ${"\u00A0"} 95’`, `40°C ${"\u00A0"} 500 στοφές/λεπτό ${"\u00A0"} 135’`, `90°C ${"\u00A0"} 600 στοφές/λεπτό ${"\u00A0"} 55’`, `50°C ${"\u00A0"} 500 στοφές/λεπτό ${"\u00A0"} 115’`, `70°C ${"\u00A0"} 400 στοφές/λεπτό ${"\u00A0"} 75’`];
+  const info = [`60°C ${"\u00A0"} 500 στοφές/λεπτό ${"\u00A0"} 80’`, `40°C ${"\u00A0"} 500 στοφές/λεπτό ${"\u00A0"} 95’`, `90°C ${"\u00A0"} 600 στοφές/λεπτό ${"\u00A0"} 65’`, `50°C ${"\u00A0"} 500 στοφές/λεπτό ${"\u00A0"} 85’`, `70°C ${"\u00A0"} 600 στοφές/λεπτό ${"\u00A0"} 75’`];
   const question = "Τα παρακάτω προγράμματα είναι κατάλληλα:";
   const variable = "WashingMachineSocialNormProgram";
   const formValues = props.formValues;
