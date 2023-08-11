@@ -24,6 +24,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
+// eslint-disable-next-line no-unused-vars
 const app = firebase.initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 

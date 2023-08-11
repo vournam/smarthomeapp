@@ -98,9 +98,9 @@ const Form3 = (props) => {
       // Apply red border class to unanswered question containers
       questionContainers.forEach((container, index) => {
         if (unansweredQuestionIndices.includes(index)) {
-          container.classList.add('unanswered-question');
+          container.classList.add('invalid');
         } else {
-          container.classList.remove('unanswered-question');
+          container.classList.remove('invalid');
         }
       });
   

@@ -79,7 +79,7 @@ const ProgramSocialNorm = (props) => {
       <p className="question">{props.question}</p>
       <div className="socialnorm-text">
         {/* <img className="socialnorm-text-icon" alt="" src="https://drive.google.com/uc?id=1XwerBrZ9n7pRxh3i_29sw03dYigU-Atn" /> */}
-        <FontAwesomeIcon className="socialnorm-text-icon" icon={faCircleInfo} style={{ color: 'darkslategray' }} />
+        <FontAwesomeIcon className="socialnorm-text-icon" icon={faCircleInfo} style={{ color: 'black' }} />
         <p>52.5% χρηστών με παρόμοιες επιλογές προτιμούν το Πρόγραμμα 2.</p>
       </div>
       <form className="options" method="get" name={`${varProp}`} onSubmit={handleSubmit}>
